@@ -7,11 +7,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   CineVaultUI.refreshIcons();
 
-  const searchInput = document.querySelector(".search-bar input");
+const searchInput = document.querySelector(".search-bar input");
   if (searchInput) {
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && searchInput.value.trim()) {
-        CineVaultUI.showToast(`Busca por "${searchInput.value.trim()}" — em breve.`);
+        const query = encodeURIComponent(searchInput.value.trim());
+        // Descobre se já estamos dentro da pasta pages/ ou na raiz
+        const base = window.location.pathname.includes("/pages/") ? "" : "pages/";
+        window.location.href = `${base}search.html?q=${query}`;
       }
     });
   }

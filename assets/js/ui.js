@@ -22,7 +22,9 @@ const CineVaultUI = (() => {
     
     const goToDetails = () => {
       const base = window.location.pathname.includes("/pages/") ? "" : "pages/";
-      window.location.href = `${base}movie.html?id=${item.id}`;
+      // Define se é 'tv' ou 'movie' para avisar a API depois
+      const mediaType = (item.type === "série" || item.type === "anime") ? "tv" : "movie";
+      window.location.href = `${base}movie.html?id=${item.id}&type=${mediaType}`;
     };
     
     card.addEventListener("click", goToDetails);

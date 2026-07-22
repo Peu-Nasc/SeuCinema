@@ -15,11 +15,25 @@ window.initSearch = async function initSearch() {
   const sortSelect = document.querySelector("#sort-select");
   const clearBtn = document.querySelector("#filters-clear");
 
-  const state = { query: "", type: "todos", genre: "todos", minRating: 0, sort: "relevance" };
-  let catalog = [];
+  const params = new URLSearchParams(window.location.search);
+  const initialQuery = params.get("q") || "";
+  const initialType = params.get("type") || "todos";
 
+  const state = { query: initialQuery, type: initialType, genre: "todos", minRating: 0, sort: "relevance" };
+  
+  if (initialQuery) searchInput.value = initialQuery;
+  if (initialType !== "todos") {
+    typeChips.forEach(c => c.classList.toggle("is-active", c.dataset.filterType === initialType));
+  }
+
+  let catalog = [];
   try {
-    catalog = await CineVaultAPI.getCatalog();
+    // Se a página já carregar com uma pesquisa na URL (ex: ?q=Vingadores), busca no TMDB
+    if (state.query.trim() !== "") {
+      catalog = await CineVaultAPI.searchCatalog(state.query);
+    } else {
+      catalog = await CineVaultAPI.getCatalog();
+    }
   } catch (err) {
     console.error("Falha ao carregar o catálogo:", err);
     CineVaultUI.showToast("Não foi possível carregar o catálogo.");
@@ -65,9 +79,27 @@ window.initSearch = async function initSearch() {
     CineVaultUI.refreshIcons();
   }
 
+  let searchTimeout;
+  
   searchInput.addEventListener("input", (e) => {
     state.query = e.target.value;
-    applyFilters();
+    
+    // Limpa o cronômetro anterior se o usuário continuar digitando
+    clearTimeout(searchTimeout);
+    
+    // Espera 500ms após o usuário parar de digitar para chamar a API
+    searchTimeout = setTimeout(async () => {
+      try {
+        if (state.query.trim() !== "") {
+          catalog = await CineVaultAPI.searchCatalog(state.query);
+        } else {
+          catalog = await CineVaultAPI.getCatalog(); // Volta para os destaques se apagar o texto
+        }
+        applyFilters();
+      } catch (err) {
+        console.error("Erro na busca:", err);
+      }
+    }, 500); 
   });
 
   typeChips.forEach((chip) => {

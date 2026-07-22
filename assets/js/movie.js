@@ -6,6 +6,7 @@
 window.initMovie = async function initMovie() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id") || "10";
+  const mediaType = params.get("type") || "movie";
 
   const els = {
     title: document.querySelector(".movie-hero__title"),
@@ -23,7 +24,7 @@ window.initMovie = async function initMovie() {
   };
 
   try {
-    const movie = await CineVaultAPI.getMovie(id);
+    const movie = await CineVaultAPI.getMovie(id, mediaType);
 
     document.title = `${movie.title} — CineVault`;
     els.title.textContent = movie.title;
@@ -44,8 +45,15 @@ window.initMovie = async function initMovie() {
     movie.cast.forEach((person) => {
       const card = document.createElement("div");
       card.className = "cast-card";
+      
+      const photoHtml = person.photo 
+        ? `<img src="${person.photo}" alt="${person.name}" loading="lazy" />` 
+        : ``; // Mantém o fundo cinza se não tiver foto
+
       card.innerHTML = `
-        <div class="cast-card__photo skeleton"></div>
+        <div class="cast-card__photo skeleton">
+          ${photoHtml}
+        </div>
         <div class="cast-card__name">${person.name}</div>
         <div class="cast-card__role">${person.role}</div>
       `;
@@ -56,8 +64,9 @@ window.initMovie = async function initMovie() {
       els.cast.innerHTML = `<p style="color: var(--text-muted); font-size: var(--fs-sm);">Elenco não disponível.</p>`;
     }
 
-    // Títulos parecidos
-    const similarItems = CineVaultAPI.findAllById(movie.similar || []);
+    // Títulos parecidos (agora já vem pronto da API)
+    const similarItems = movie.similar || [];
+    
     if (similarItems.length) {
       CineVaultUI.renderCarousel(els.similar, similarItems);
     } else {

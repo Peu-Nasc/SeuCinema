@@ -241,10 +241,22 @@ const CineVaultAPI = (() => {
   }
 
   // Normaliza os dados do TMDB para o formato do CineVault
+  const TMDB_GENRES = {
+    28: "Ação", 12: "Aventura", 16: "Animação", 35: "Comédia",
+    80: "Crime", 18: "Drama", 14: "Fantasia", 878: "Ficção científica",
+    36: "História", 53: "Suspense"
+  };
+
+  // Substitua a versão antiga do mapTMDBItem por esta:
   function mapTMDBItem(item, defaultType = "filme") {
-    // TMDB usa 'media_type' em endpoints mistos (como o trending). 
-    // Em endpoints específicos (como /discover/tv), forçamos o tipo.
     const isTV = item.media_type === "tv" || defaultType === "série";
+    
+    // O TMDB não tem um tipo específico para "Anime", mas podemos deduzir 
+    // se for uma série, tiver o gênero Animação (16) e origem no Japão (JP).
+    let type = isTV ? "série" : "filme";
+    if (isTV && item.origin_country?.includes("JP") && item.genre_ids?.includes(16)) {
+      type = "anime";
+    }
     
     const title = item.title || item.name;
     const date = item.release_date || item.first_air_date;
@@ -255,7 +267,8 @@ const CineVaultAPI = (() => {
       title: title,
       year: year,
       rating: item.vote_average || 0,
-      type: isTV ? "série" : "filme",
+      type: type,
+      genres: (item.genre_ids || []).map(id => TMDB_GENRES[id]).filter(Boolean),
       poster: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "",
       backdrop: item.backdrop_path ? `https://image.tmdb.org/t/p/w1280${item.backdrop_path}` : "",
     };
@@ -306,22 +319,91 @@ const CineVaultAPI = (() => {
     throw new Error("Perfil real ainda não configurado — defina USE_MOCK=false só após ligar o Firebase.");
   }
 
-  async function getMovie(id) {
+  async function getMovie(id, mediaType = "movie") {
     if (USE_MOCK) {
       const numericId = Number(id);
       return Promise.resolve(MOCK_MOVIE_DETAILS[numericId] || { ...DEFAULT_MOVIE, id: numericId });
     }
-    // const res = await fetch(`${TMDB_BASE}/movie/${id}?api_key=${TMDB_KEY}&language=pt-BR&append_to_response=credits`);
-    // return mapTmdbResponseToMovie(await res.json());
-    throw new Error("Integração TMDB ainda não configurada — defina TMDB_KEY e USE_MOCK=false.");
+
+    try {
+      // Agora o endpoint muda dinamicamente para /movie ou /tv
+      const data = await fetchTMDB(`/${mediaType}/${id}`, {
+        append_to_response: "credits,similar"
+      });
+
+      return {
+        id: data.id,
+        title: data.title || data.name, // Séries usam "name", Filmes usam "title"
+        tagline: data.tagline || "",
+        year: (data.release_date || data.first_air_date || "").split("-")[0],
+        type: mediaType === "tv" ? "série" : "filme",
+        rating: data.vote_average || 0,
+        // Filmes têm 'runtime', séries têm 'episode_run_time'
+        runtime: data.runtime 
+          ? `${Math.floor(data.runtime / 60)}h ${data.runtime % 60}min` 
+          : (data.episode_run_time && data.episode_run_time[0] ? `${data.episode_run_time[0]}min/ep` : "N/D"),
+        genres: (data.genres || []).map(g => g.name),
+        description: data.overview || "Sem sinopse disponível.",
+        backdrop: data.backdrop_path ? `https://image.tmdb.org/t/p/w1280${data.backdrop_path}` : "",
+        poster: data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : "",
+        
+        cast: (data.credits?.cast || []).slice(0, 6).map(person => ({
+          name: person.name,
+          role: person.character,
+          photo: person.profile_path ? `https://image.tmdb.org/t/p/w185${person.profile_path}` : ""
+        })),
+        
+        similar: (data.similar?.results || []).slice(0, 8).map(i => mapTMDBItem(i, mediaType === "tv" ? "série" : "filme"))
+      };
+    } catch (error) {
+      console.error("Falha ao buscar detalhes do título:", error);
+      throw error;
+    }
   }
 
   async function getCatalog() {
-    if (USE_MOCK) {
-      return Promise.resolve(buildCatalog());
+    if (USE_MOCK) return Promise.resolve(buildCatalog());
+
+    try {
+      // Buscamos filmes, séries e animes populares para formar nosso catálogo base da tela de busca
+      const [movies, series, animes] = await Promise.all([
+        fetchTMDB("/discover/movie", { page: 1, sort_by: "popularity.desc" }),
+        fetchTMDB("/discover/tv", { page: 1, sort_by: "popularity.desc" }),
+        fetchTMDB("/discover/tv", { page: 1, with_genres: 16, with_origin_country: "JP", sort_by: "popularity.desc" })
+      ]);
+
+      const catalog = [
+        ...movies.results.map(i => mapTMDBItem(i, "filme")),
+        ...series.results.map(i => mapTMDBItem(i, "série")),
+        ...animes.results.map(i => mapTMDBItem(i, "série")) // A função mapTMDBItem vai transformá-los em 'anime'
+      ];
+
+      // Remove itens duplicados pelo ID (caso um anime venha na lista de séries também)
+      return Array.from(new Map(catalog.map(item => [item.id, item])).values());
+    } catch (error) {
+      console.error("Falha ao carregar catálogo:", error);
+      throw error;
     }
-    // Combinação futura de endpoints TMDB (discover/movie, discover/tv) paginados.
-    throw new Error("Integração TMDB ainda não configurada — defina TMDB_KEY e USE_MOCK=false.");
+  }
+
+  // Faz a busca real nos servidores do TMDB
+  async function searchCatalog(query) {
+    if (USE_MOCK) return Promise.resolve(buildCatalog());
+
+    try {
+      // O endpoint /search/multi procura por filmes e séries ao mesmo tempo
+      const data = await fetchTMDB("/search/multi", { query: query });
+      
+      // Filtramos para remover resultados que sejam "pessoas" (atores) e mapeamos para o nosso formato
+      const catalog = data.results
+        .filter(i => i.media_type === "movie" || i.media_type === "tv")
+        .map(i => mapTMDBItem(i));
+        
+      return catalog;
+    } catch (error) {
+      console.error("Falha ao buscar no TMDB:", error);
+      throw error;
+    }
   }
 
   function findAllById(ids) {
@@ -329,5 +411,5 @@ const CineVaultAPI = (() => {
     return ids.map((id) => pool.find((item) => item.id === id)).filter(Boolean);
   }
 
-  return { getHome, getProfile, getMovie, getCatalog, getLists, getListById, findAllById };
+return { getHome, getProfile, getMovie, getCatalog, searchCatalog, getLists, getListById, findAllById };
 })();

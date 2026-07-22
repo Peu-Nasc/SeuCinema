@@ -1,0 +1,26 @@
+/* ============================================================
+   CINEVAULT — HOME
+   Regras específicas do index.html. Nada de token ou componente
+   genérico aqui — isso vive em variables.css / components.css.
+   ============================================================ */
+
+.page-home main {
+  padding-bottom: var(--space-9);
+}
+
+.page-home .section:first-of-type {
+  padding-top: 0;
+}
+
+.quick-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+@media (max-width: 700px) {
+  .quick-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

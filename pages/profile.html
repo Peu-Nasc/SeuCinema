@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil — CineVault</title>
+  <meta name="description" content="Seu perfil no CineVault: estatísticas, títulos assistidos e conquistas." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/profile.css" />
+</head>
+<body class="page-profile">
+
+  <header class="navbar">
+    <a href="../index.html" class="navbar__logo">
+      <i data-lucide="clapperboard" class="icon" style="color: var(--accent-yellow);"></i>
+      Cine<span>Vault</span>
+    </a>
+
+    <form class="search-bar" role="search" onsubmit="return false;">
+      <i data-lucide="search" class="icon"></i>
+      <input type="text" placeholder="Pesquisar filmes, séries, animes..." aria-label="Pesquisar" />
+    </form>
+
+    <nav class="navbar__links" aria-label="Navegação principal">
+      <a href="../index.html" class="navbar__link"><i data-lucide="home" class="icon"></i> Início</a>
+      <a href="search.html" class="navbar__link"><i data-lucide="clapperboard" class="icon"></i> Filmes</a>
+      <a href="search.html" class="navbar__link"><i data-lucide="tv" class="icon"></i> Séries</a>
+      <a href="search.html" class="navbar__link"><i data-lucide="sparkles" class="icon"></i> Animes</a>
+      <a href="lists.html" class="navbar__link"><i data-lucide="list" class="icon"></i> Listas</a>
+    </nav>
+
+    <div class="navbar__spacer"></div>
+
+    <a href="profile.html" class="navbar__profile" aria-label="Meu perfil">
+      <img class="navbar__avatar" id="navbar-avatar" src="" alt="" />
+    </a>
+  </header>
+
+  <main class="container">
+
+    <section class="profile-header">
+      <div class="profile-header__avatar-wrap">
+        <img class="profile-header__avatar" src="" alt="Avatar do usuário" />
+        <span class="profile-header__level">27</span>
+      </div>
+      <div>
+        <h1 class="profile-header__name">Carregando...</h1>
+        <p class="profile-header__handle"></p>
+        <div class="profile-header__actions">
+          <button class="btn btn--primary"><i data-lucide="pencil" class="icon"></i> Editar perfil</button>
+          <button class="btn btn--ghost"><i data-lucide="share-2" class="icon"></i> Compartilhar</button>
+        </div>
+        <div class="level-progress">
+          <div class="level-progress__labels"></div>
+          <div class="level-progress__track">
+            <div class="level-progress__fill" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="profile-stats">
+      <div class="stat-chip"><span class="stat-chip__value" id="stat-movies">—</span><span class="stat-chip__label">Filmes</span></div>
+      <div class="stat-chip"><span class="stat-chip__value" id="stat-series">—</span><span class="stat-chip__label">Séries</span></div>
+      <div class="stat-chip"><span class="stat-chip__value" id="stat-hours">—</span><span class="stat-chip__label">Assistidas</span></div>
+      <div class="stat-chip"><span class="stat-chip__value" id="stat-achievements">—</span><span class="stat-chip__label">Conquistas</span></div>
+    </div>
+
+    <nav class="tabs" aria-label="Seções do perfil">
+      <button class="tab is-active" data-tab="watched">
+        <i data-lucide="clapperboard" class="icon"></i> Assistidos
+        <span class="tab__count" data-tab-count="watched">0</span>
+      </button>
+      <button class="tab" data-tab="favorites">
+        <i data-lucide="heart" class="icon"></i> Favoritos
+        <span class="tab__count" data-tab-count="favorites">0</span>
+      </button>
+      <button class="tab" data-tab="watchlist">
+        <i data-lucide="bookmark" class="icon"></i> Quero assistir
+        <span class="tab__count" data-tab-count="watchlist">0</span>
+      </button>
+      <button class="tab" data-tab="achievements">
+        <i data-lucide="trophy" class="icon"></i> Conquistas
+      </button>
+    </nav>
+
+    <section class="title-grid" id="grid-watched" data-panel="watched"></section>
+    <section class="title-grid" id="grid-favorites" data-panel="favorites" hidden></section>
+    <section class="title-grid" id="grid-watchlist" data-panel="watchlist" hidden></section>
+    <section class="achievements-grid" id="grid-achievements" data-panel="achievements" hidden></section>
+
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/profile.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      CineVaultUI.refreshIcons();
+      window.initProfile();
+    });
+  </script>
+</body>
+</html>

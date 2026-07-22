@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configurações — CineVault</title>
+  <meta name="description" content="Preferências de conta, notificações e privacidade no CineVault." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/settings.css" />
+</head>
+<body class="page-settings">
+
+  <header class="navbar">
+    <a href="../index.html" class="navbar__logo">
+      <i data-lucide="clapperboard" class="icon" style="color: var(--accent-yellow);"></i>
+      Cine<span>Vault</span>
+    </a>
+
+    <form class="search-bar" role="search" onsubmit="return false;">
+      <i data-lucide="search" class="icon"></i>
+      <input type="text" placeholder="Pesquisar filmes, séries, animes..." aria-label="Pesquisar" />
+    </form>
+
+    <nav class="navbar__links" aria-label="Navegação principal">
+      <a href="../index.html" class="navbar__link"><i data-lucide="home" class="icon"></i> Início</a>
+      <a href="search.html" class="navbar__link"><i data-lucide="clapperboard" class="icon"></i> Filmes</a>
+      <a href="search.html" class="navbar__link"><i data-lucide="tv" class="icon"></i> Séries</a>
+      <a href="search.html" class="navbar__link"><i data-lucide="sparkles" class="icon"></i> Animes</a>
+      <a href="lists.html" class="navbar__link"><i data-lucide="list" class="icon"></i> Listas</a>
+    </nav>
+
+    <div class="navbar__spacer"></div>
+
+    <a href="profile.html" class="navbar__profile" aria-label="Meu perfil">
+      <img class="navbar__avatar" src="https://api.dicebear.com/7.x/shapes/svg?seed=cinevault" alt="" />
+    </a>
+  </header>
+
+  <main class="container">
+    <h1 style="padding-top: var(--space-6);">Configurações</h1>
+
+    <div class="settings-layout">
+
+      <nav class="settings-nav" aria-label="Seções de configuração">
+        <a href="#" class="settings-nav__link is-active" data-settings-tab="conta">
+          <i data-lucide="user" class="icon"></i> Conta
+        </a>
+        <a href="#" class="settings-nav__link" data-settings-tab="preferencias">
+          <i data-lucide="sliders-horizontal" class="icon"></i> Preferências
+        </a>
+        <a href="#" class="settings-nav__link" data-settings-tab="notificacoes">
+          <i data-lucide="bell" class="icon"></i> Notificações
+        </a>
+        <a href="#" class="settings-nav__link" data-settings-tab="privacidade">
+          <i data-lucide="shield" class="icon"></i> Privacidade
+        </a>
+        <a href="#" class="settings-nav__link settings-nav__link--danger" data-settings-tab="conta-perigo">
+          <i data-lucide="triangle-alert" class="icon"></i> Zona de perigo
+        </a>
+      </nav>
+
+      <div class="settings-content">
+
+        <!-- Conta -->
+        <section data-settings-panel="conta">
+          <div class="settings-panel">
+            <h2 class="settings-panel__title">Informações da conta</h2>
+            <p class="settings-panel__desc">Como seu perfil aparece para outras pessoas.</p>
+
+            <div class="field">
+              <label class="field__label" for="settings-name">Nome de exibição</label>
+              <input type="text" id="settings-name" value="Pedro" />
+            </div>
+            <div class="field">
+              <label class="field__label" for="settings-handle">Nome de usuário</label>
+              <input type="text" id="settings-handle" value="@pedro" />
+            </div>
+            <div class="field">
+              <label class="field__label" for="settings-email">E-mail</label>
+              <input type="email" id="settings-email" value="pedro@exemplo.com" />
+            </div>
+
+            <button class="btn btn--primary" data-save style="margin-top: var(--space-4);">
+              <i data-lucide="check" class="icon"></i> Salvar alterações
+            </button>
+          </div>
+        </section>
+
+        <!-- Preferências -->
+        <section data-settings-panel="preferencias" hidden>
+          <div class="settings-panel">
+            <h2 class="settings-panel__title">Preferências de exibição</h2>
+            <p class="settings-panel__desc">Como o conteúdo é mostrado para você.</p>
+
+            <div class="field">
+              <label class="field__label" for="settings-language">Idioma</label>
+              <select id="settings-language">
+                <option>Português (Brasil)</option>
+                <option>English</option>
+                <option>Español</option>
+              </select>
+            </div>
+
+            <div class="option-row">
+              <span>
+                <span class="option-row__title">Autoplay de trailers</span><br/>
+                <span class="option-row__desc">Reproduzir o trailer automaticamente na página do título</span>
+              </span>
+              <label class="toggle">
+                <input type="checkbox" checked />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+
+            <div class="option-row">
+              <span>
+                <span class="option-row__title">Marcar spoilers</span><br/>
+                <span class="option-row__desc">Ocultar comentários com spoiler até você clicar</span>
+              </span>
+              <label class="toggle">
+                <input type="checkbox" checked />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+
+            <button class="btn btn--primary" data-save style="margin-top: var(--space-4);">
+              <i data-lucide="check" class="icon"></i> Salvar alterações
+            </button>
+          </div>
+        </section>
+
+        <!-- Notificações -->
+        <section data-settings-panel="notificacoes" hidden>
+          <div class="settings-panel">
+            <h2 class="settings-panel__title">Notificações</h2>
+            <p class="settings-panel__desc">Quando o CineVault deve te avisar.</p>
+
+            <div class="option-row">
+              <span>
+                <span class="option-row__title">Novos episódios</span><br/>
+                <span class="option-row__desc">Séries da sua lista que lançaram episódio novo</span>
+              </span>
+              <label class="toggle">
+                <input type="checkbox" checked />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+
+            <div class="option-row">
+              <span>
+                <span class="option-row__title">Recomendações semanais</span><br/>
+                <span class="option-row__desc">Sugestões baseadas no que você assistiu</span>
+              </span>
+              <label class="toggle">
+                <input type="checkbox" checked />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+
+            <div class="option-row">
+              <span>
+                <span class="option-row__title">Conquistas desbloqueadas</span><br/>
+                <span class="option-row__desc">Quando você alcançar uma nova conquista</span>
+              </span>
+              <label class="toggle">
+                <input type="checkbox" checked />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+
+            <button class="btn btn--primary" data-save style="margin-top: var(--space-4);">
+              <i data-lucide="check" class="icon"></i> Salvar alterações
+            </button>
+          </div>
+        </section>
+
+        <!-- Privacidade -->
+        <section data-settings-panel="privacidade" hidden>
+          <div class="settings-panel">
+            <h2 class="settings-panel__title">Privacidade</h2>
+            <p class="settings-panel__desc">Quem pode ver o que você assiste.</p>
+
+            <div class="field">
+              <label class="field__label" for="settings-visibility">Visibilidade do perfil</label>
+              <select id="settings-visibility">
+                <option>Público</option>
+                <option>Somente amigos</option>
+                <option>Privado</option>
+              </select>
+            </div>
+
+            <div class="option-row">
+              <span>
+                <span class="option-row__title">Mostrar histórico completo</span><br/>
+                <span class="option-row__desc">Outras pessoas veem tudo que você já assistiu</span>
+              </span>
+              <label class="toggle">
+                <input type="checkbox" />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+
+            <button class="btn btn--primary" data-save style="margin-top: var(--space-4);">
+              <i data-lucide="check" class="icon"></i> Salvar alterações
+            </button>
+          </div>
+        </section>
+
+        <!-- Zona de perigo -->
+        <section data-settings-panel="conta-perigo" hidden>
+          <div class="settings-panel danger-zone">
+            <h2 class="settings-panel__title">Zona de perigo</h2>
+            <p class="settings-panel__desc">Estas ações não podem ser desfeitas.</p>
+
+            <button class="btn btn--danger" id="delete-account">
+              <i data-lucide="trash-2" class="icon"></i> Excluir minha conta
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/settings.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      CineVaultUI.refreshIcons();
+      window.initSettings();
+    });
+  </script>
+</body>
+</html>

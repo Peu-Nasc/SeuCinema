@@ -1,0 +1,94 @@
+/* ============================================================
+   CINEVAULT — DESIGN TOKENS
+   "Sua história através do cinema."
+   Fonte única da verdade para cor, tipografia, espaçamento,
+   sombra e movimento. Nenhum componente deve usar um valor
+   bruto (hex, px solto) fora daqui.
+   ============================================================ */
+
+:root {
+  /* ---------- Cor — superfícies ---------- */
+  --bg: #090B10;
+  --bg-elevated: #0D1017;
+  --card: #151A22;
+  --card-hover: #202938;
+  --border: #232A36;
+  --border-soft: #1A2029;
+
+  /* ---------- Cor — marca / semântica ---------- */
+  --accent-yellow: #FFD54F;   /* destaque, avaliação, marca */
+  --accent-blue: #5CAEFF;     /* links, séries, informação */
+  --accent-green: #37D67A;    /* sucesso, "assistido", conquistas */
+  --accent-red: #F44336;      /* erro, remover, "não assistido" */
+
+  --accent-yellow-dim: #FFD54F1A;
+  --accent-blue-dim: #5CAEFF1A;
+  --accent-green-dim: #37D67A1A;
+  --accent-red-dim: #F443361A;
+
+  /* ---------- Cor — texto ---------- */
+  --text-primary: #F5F6F8;
+  --text-secondary: #A7AEBB;
+  --text-muted: #6B7383;
+  --text-on-accent: #090B10;
+
+  /* ---------- Tipografia ---------- */
+  --font-title: "Poppins", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --fs-xs: 0.75rem;    /* 12px — legendas, metadados */
+  --fs-sm: 0.875rem;   /* 14px — texto secundário */
+  --fs-base: 1rem;     /* 16px — corpo */
+  --fs-md: 1.125rem;   /* 18px — subtítulos de card */
+  --fs-lg: 1.5rem;     /* 24px — títulos de seção */
+  --fs-xl: 2rem;       /* 32px — títulos de página */
+  --fs-2xl: 2.75rem;   /* 44px — hero */
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --lh-tight: 1.2;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.7;
+
+  /* ---------- Espaçamento (escala 4px) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* ---------- Raio ---------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* ---------- Sombra ---------- */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --shadow-glow-yellow: 0 8px 28px rgba(255, 213, 79, 0.25);
+
+  /* ---------- Movimento ---------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+
+  /* ---------- Layout ---------- */
+  --header-height: 72px;
+  --container-max: 1400px;
+  --container-pad: clamp(20px, 4vw, 64px);
+
+  /* ---------- Z-index ---------- */
+  --z-header: 100;
+  --z-modal: 1000;
+  --z-toast: 1100;
+}

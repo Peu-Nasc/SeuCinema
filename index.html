@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineVault — Sua história através do cinema</title>
+  <meta name="description" content="CineVault é sua biblioteca pessoal de filmes, séries, animes e muito mais." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/css/variables.css" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/home.css" />
+</head>
+<body class="page-home">
+
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">
+      <i data-lucide="clapperboard" class="icon" style="color: var(--accent-yellow);"></i>
+      Cine<span>Vault</span>
+    </a>
+
+    <form class="search-bar" role="search" onsubmit="return false;">
+      <i data-lucide="search" class="icon"></i>
+      <input type="text" placeholder="Pesquisar filmes, séries, animes..." aria-label="Pesquisar" />
+    </form>
+
+    <nav class="navbar__links" aria-label="Navegação principal">
+      <a href="index.html" class="navbar__link is-active"><i data-lucide="home" class="icon"></i> Início</a>
+      <a href="pages/search.html" class="navbar__link"><i data-lucide="clapperboard" class="icon"></i> Filmes</a>
+      <a href="pages/search.html" class="navbar__link"><i data-lucide="tv" class="icon"></i> Séries</a>
+      <a href="pages/search.html" class="navbar__link"><i data-lucide="sparkles" class="icon"></i> Animes</a>
+      <a href="pages/lists.html" class="navbar__link"><i data-lucide="list" class="icon"></i> Listas</a>
+    </nav>
+
+    <div class="navbar__spacer"></div>
+
+    <a href="pages/profile.html" class="navbar__profile" aria-label="Meu perfil">
+      <img class="navbar__avatar" src="https://api.dicebear.com/7.x/shapes/svg?seed=cinevault" alt="" />
+    </a>
+  </header>
+
+  <main class="container">
+
+    <section class="hero" aria-label="Destaque">
+      <img class="hero__backdrop" src="" alt="" aria-hidden="true" />
+      <div class="hero__content">
+        <span class="hero__eyebrow"><i data-lucide="flame" class="icon"></i> Em destaque esta semana</span>
+        <h1 class="hero__title">Carregando...</h1>
+        <p class="hero__desc"></p>
+        <div class="hero__actions">
+          <button class="btn btn--primary"><i data-lucide="plus" class="icon"></i> Adicionar à lista</button>
+          <button class="btn btn--ghost">
+            <i data-lucide="star" class="icon"></i>
+            <span class="hero__rating"></span> · <span class="hero__year"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="quick-stats">
+      <div class="stat-chip"><span class="stat-chip__value">347</span><span class="stat-chip__label">Filmes</span></div>
+      <div class="stat-chip"><span class="stat-chip__value">42</span><span class="stat-chip__label">Séries</span></div>
+      <div class="stat-chip"><span class="stat-chip__value">921h</span><span class="stat-chip__label">Assistidas</span></div>
+      <div class="stat-chip"><span class="stat-chip__value">18</span><span class="stat-chip__label">Conquistas</span></div>
+    </div>
+
+    <section class="section" aria-labelledby="titulo-em-alta">
+      <div class="section__header">
+        <h2 class="section__title" id="titulo-em-alta"><i data-lucide="flame"></i> Em alta</h2>
+        <a href="pages/search.html" class="section__link">Ver tudo</a>
+      </div>
+      <div class="carousel" id="carousel-trending"></div>
+    </section>
+
+    <section class="section" aria-labelledby="titulo-bem-avaliados">
+      <div class="section__header">
+        <h2 class="section__title" id="titulo-bem-avaliados"><i data-lucide="star"></i> Mais bem avaliados</h2>
+        <a href="pages/search.html" class="section__link">Ver tudo</a>
+      </div>
+      <div class="carousel" id="carousel-top-rated"></div>
+    </section>
+
+    <section class="section" aria-labelledby="titulo-filmes">
+      <div class="section__header">
+        <h2 class="section__title" id="titulo-filmes"><i data-lucide="clapperboard"></i> Filmes</h2>
+        <a href="pages/search.html" class="section__link">Ver tudo</a>
+      </div>
+      <div class="carousel" id="carousel-movies"></div>
+    </section>
+
+    <section class="section" aria-labelledby="titulo-series">
+      <div class="section__header">
+        <h2 class="section__title" id="titulo-series"><i data-lucide="tv"></i> Séries</h2>
+        <a href="pages/search.html" class="section__link">Ver tudo</a>
+      </div>
+      <div class="carousel" id="carousel-series"></div>
+    </section>
+
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/home.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

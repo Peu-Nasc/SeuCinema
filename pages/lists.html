@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Listas — CineVault</title>
+  <meta name="description" content="Suas listas personalizadas de filmes, séries e animes no CineVault." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/lists.css" />
+</head>
+<body class="page-lists">
+
+  <header class="navbar">
+    <a href="../index.html" class="navbar__logo">
+      <i data-lucide="clapperboard" class="icon" style="color: var(--accent-yellow);"></i>
+      Cine<span>Vault</span>
+    </a>
+
+    <form class="search-bar" role="search" onsubmit="return false;">
+      <i data-lucide="search" class="icon"></i>
+      <input type="text" placeholder="Pesquisar filmes, séries, animes..." aria-label="Pesquisar" />
+    </form>
+
+    <nav class="navbar__links" aria-label="Navegação principal">
+      <a href="../index.html" class="navbar__link"><i data-lucide="home" class="icon"></i> Início</a>
+      <a href="search.html" class="navbar__link"><i data-lucide="clapperboard" class="icon"></i> Filmes</a>
+      <a href="search.html" class="navbar__link"><i data-lucide="tv" class="icon"></i> Séries</a>
+      <a href="search.html" class="navbar__link"><i data-lucide="sparkles" class="icon"></i> Animes</a>
+      <a href="lists.html" class="navbar__link is-active"><i data-lucide="list" class="icon"></i> Listas</a>
+    </nav>
+
+    <div class="navbar__spacer"></div>
+
+    <a href="profile.html" class="navbar__profile" aria-label="Meu perfil">
+      <img class="navbar__avatar" src="https://api.dicebear.com/7.x/shapes/svg?seed=cinevault" alt="" />
+    </a>
+  </header>
+
+  <main class="container">
+
+    <div id="lists-overview">
+      <div class="lists-header">
+        <h1><i data-lucide="list" class="icon" style="color: var(--accent-yellow); vertical-align: -3px;"></i> Suas listas</h1>
+      </div>
+      <div class="lists-grid" id="lists-grid"></div>
+    </div>
+
+    <div id="list-detail" hidden>
+      <div class="list-detail__header">
+        <a href="lists.html" class="list-detail__back">
+          <i data-lucide="arrow-left" class="icon" style="width:16px;height:16px;"></i> Todas as listas
+        </a>
+      </div>
+      <div style="margin-bottom: var(--space-6);">
+        <h1 class="list-detail__title"><i data-lucide="heart" class="icon" id="list-detail-icon"></i> <span id="list-detail-name">Carregando...</span></h1>
+        <p class="list-detail__desc" id="list-detail-desc"></p>
+      </div>
+      <div class="list-detail__grid" id="list-detail-grid"></div>
+    </div>
+
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/lists.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      CineVaultUI.refreshIcons();
+      window.initLists();
+    });
+  </script>
+</body>
+</html>

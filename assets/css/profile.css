@@ -1,0 +1,205 @@
+/* ============================================================
+   CINEVAULT — PROFILE
+   Regras específicas do pages/profile.html.
+   ============================================================ */
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding-block: var(--space-7);
+  border-bottom: 1px solid var(--border-soft);
+  margin-bottom: var(--space-6);
+}
+
+.profile-header__avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-header__avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 3px solid var(--accent-yellow);
+}
+
+.profile-header__level {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: var(--bg);
+  border: 2px solid var(--accent-yellow);
+  color: var(--accent-yellow);
+  font-family: var(--font-title);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-xs);
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-header__name {
+  font-size: var(--fs-xl);
+  margin-bottom: 4px;
+}
+
+.profile-header__handle {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-4);
+}
+
+.profile-header__actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+}
+
+/* ---------- Barra de progresso de nível ---------- */
+.level-progress {
+  margin-top: var(--space-3);
+  max-width: 320px;
+}
+
+.level-progress__labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.level-progress__track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--card);
+  overflow: hidden;
+}
+
+.level-progress__fill {
+  height: 100%;
+  background: var(--accent-yellow);
+  border-radius: var(--radius-full);
+}
+
+/* ---------- Abas ---------- */
+.tabs {
+  display: flex;
+  gap: var(--space-2);
+  border-bottom: 1px solid var(--border-soft);
+  margin-bottom: var(--space-5);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  transition: color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.tab:hover {
+  color: var(--text-primary);
+}
+
+.tab.is-active {
+  color: var(--text-primary);
+  border-color: var(--accent-yellow);
+}
+
+.tab__count {
+  background: var(--card);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+}
+
+.tab.is-active .tab__count {
+  color: var(--accent-yellow);
+}
+
+/* ---------- Grade de títulos (sem carrossel, com wrap) ---------- */
+.title-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-4);
+}
+
+.title-grid .card {
+  width: 100%;
+}
+
+/* ---------- Conquistas ---------- */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.achievement {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+}
+
+.achievement--locked {
+  opacity: 0.45;
+}
+
+.achievement__icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-yellow-dim);
+  color: var(--accent-yellow);
+}
+
+.achievement__title {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.achievement__desc {
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 700px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-header__actions {
+    justify-content: center;
+  }
+
+  .profile-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

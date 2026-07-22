@@ -1,0 +1,146 @@
+/* ============================================================
+   CINEVAULT — LISTS
+   Regras específicas do pages/lists.html.
+   ============================================================ */
+
+.lists-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--space-6);
+}
+
+.lists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-5);
+}
+
+/* ---------- Card de lista ---------- */
+.list-card {
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--duration-base) var(--ease-out),
+              box-shadow var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out);
+}
+
+.list-card:hover,
+.list-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border);
+}
+
+.list-card__preview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 100px;
+  background: var(--bg-elevated);
+}
+
+.list-card__preview div {
+  background: var(--card-hover);
+  border-right: 1px solid var(--bg-elevated);
+}
+
+.list-card__preview div:last-child {
+  border-right: none;
+}
+
+.list-card__body {
+  padding: var(--space-4);
+}
+
+.list-card__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-title);
+  font-size: var(--fs-md);
+  margin-bottom: 4px;
+}
+
+.list-card__title .icon {
+  color: var(--accent-yellow);
+  width: 18px;
+  height: 18px;
+}
+
+.list-card__desc {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.list-card__count {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+/* ---------- Criar nova lista ---------- */
+.list-card--new {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 180px;
+  border: 1px dashed var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.list-card--new:hover {
+  border-color: var(--accent-yellow);
+  color: var(--accent-yellow);
+}
+
+/* ---------- Vista de detalhe de uma lista ---------- */
+.list-detail__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-6);
+}
+
+.list-detail__back {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}
+
+.list-detail__back:hover {
+  color: var(--text-primary);
+}
+
+.list-detail__title {
+  font-size: var(--fs-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.list-detail__title .icon {
+  color: var(--accent-yellow);
+}
+
+.list-detail__desc {
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.list-detail__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: var(--space-4);
+}
+
+.list-detail__grid .card {
+  width: 100%;
+}

@@ -1,0 +1,224 @@
+/* ============================================================
+   CINEVAULT — MOVIE (detalhes de um título)
+   Regras específicas do pages/movie.html.
+   ============================================================ */
+
+.movie-hero {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: var(--space-5);
+  padding: var(--space-7);
+  display: flex;
+  gap: var(--space-6);
+  background: var(--card);
+}
+
+.movie-hero__backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.35;
+}
+
+.movie-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--bg) 15%, rgba(9, 11, 16, 0.4) 60%, rgba(9, 11, 16, 0.15) 100%),
+              linear-gradient(0deg, var(--bg) 0%, transparent 55%);
+}
+
+.movie-hero__poster {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 220px;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-lg);
+}
+
+.movie-hero__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movie-hero__content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+}
+
+.movie-hero__badges {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.pill {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--card-hover);
+  color: var(--text-secondary);
+}
+
+.pill--type {
+  background: var(--accent-blue-dim);
+  color: var(--accent-blue);
+}
+
+.movie-hero__title {
+  font-size: var(--fs-2xl);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-2);
+}
+
+.movie-hero__tagline {
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: var(--space-4);
+}
+
+.movie-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  margin-bottom: var(--space-5);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.movie-hero__meta strong {
+  color: var(--text-primary);
+}
+
+.movie-hero__rating {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--accent-yellow);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+}
+
+.movie-hero__desc {
+  max-width: 640px;
+  color: var(--text-secondary);
+  line-height: var(--lh-relaxed);
+  margin-bottom: var(--space-5);
+}
+
+.movie-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.rate-widget {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+}
+
+.rate-widget button {
+  color: var(--border);
+  transition: color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+
+.rate-widget button:hover,
+.rate-widget button.is-active {
+  color: var(--accent-yellow);
+  transform: scale(1.1);
+}
+
+/* ---------- Elenco ---------- */
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--space-4);
+}
+
+.cast-card {
+  text-align: center;
+}
+
+.cast-card__photo {
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  background: var(--card);
+  overflow: hidden;
+  margin-bottom: var(--space-2);
+}
+
+.cast-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cast-card__name {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.cast-card__role {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+/* ---------- Comentário / review pessoal ---------- */
+.review-box {
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+
+.review-box textarea {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  margin-block: var(--space-3);
+}
+
+.review-box textarea:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+@media (max-width: 700px) {
+  .movie-hero {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-5);
+  }
+
+  .movie-hero__meta,
+  .movie-hero__actions {
+    justify-content: center;
+  }
+}

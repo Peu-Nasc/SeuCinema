@@ -19,11 +19,12 @@ const CineVaultUI = (() => {
     card.tabIndex = 0;
     card.setAttribute("role", "link");
     card.setAttribute("aria-label", `Ver detalhes de ${item.title}`);
-
+    
     const goToDetails = () => {
       const base = window.location.pathname.includes("/pages/") ? "" : "pages/";
       window.location.href = `${base}movie.html?id=${item.id}`;
     };
+    
     card.addEventListener("click", goToDetails);
     card.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
@@ -32,9 +33,14 @@ const CineVaultUI = (() => {
       }
     });
 
+    // Tratativa caso o TMDB não retorne a imagem (evita imagem quebrada)
+    const posterHtml = item.poster 
+      ? `<img class="card__poster" src="${item.poster}" alt="${item.title}" loading="lazy" />`
+      : `<div class="card__poster skeleton" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 12px; text-align: center; padding: 10px;">Sem Imagem</div>`;
+
     card.innerHTML = `
       <div class="card__poster-wrap">
-        <div class="card__poster skeleton" aria-hidden="true"></div>
+        ${posterHtml}
         <span class="card__badge">
           <i data-lucide="${TYPE_ICON[item.type] || "clapperboard"}"></i>
           ${capitalize(item.type)}
@@ -51,7 +57,6 @@ const CineVaultUI = (() => {
         </div>
       </div>
     `;
-
     return card;
   }
 
@@ -67,6 +72,12 @@ const CineVaultUI = (() => {
     container.querySelector(".hero__desc").textContent = hero.description;
     container.querySelector(".hero__rating").textContent = hero.rating.toFixed(1);
     container.querySelector(".hero__year").textContent = hero.year;
+    
+    // Atualizando a imagem de fundo do destaque!
+    const backdropEl = container.querySelector(".hero__backdrop");
+    if (backdropEl && hero.backdrop) {
+      backdropEl.src = hero.backdrop;
+    }
   }
 
   function showToast(message) {

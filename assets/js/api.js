@@ -8,9 +8,9 @@
 const CineVaultAPI = (() => {
   // Preencha com sua chave em https://www.themoviedb.org/settings/api
   // e troque USE_MOCK para false quando estiver pronto.
-  const TMDB_KEY = "";
+  const TMDB_KEY = "5a0c0194577a296c1e73d19010a94903";
   const TMDB_BASE = "https://api.themoviedb.org/3";
-  const USE_MOCK = true;
+  const USE_MOCK = false;
 
   /* ---------- Dados mock (placeholders visuais, sem pôster real) ---------- */
   const MOCK = {
@@ -223,15 +223,79 @@ const CineVaultAPI = (() => {
     return lists.find((l) => l.id === id) || null;
   }
 
+  /* ---------- Integração TMDB ---------- */
+
+  // Função auxiliar para simplificar as chamadas à API
+  async function fetchTMDB(endpoint, params = {}) {
+    const url = new URL(`${TMDB_BASE}${endpoint}`);
+    url.searchParams.append("api_key", TMDB_KEY);
+    url.searchParams.append("language", "pt-BR"); // Traz sinopses e títulos em português
+    
+    for (const [key, value] of Object.entries(params)) {
+      url.searchParams.append(key, value);
+    }
+
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Erro na API TMDB: ${response.status}`);
+    return response.json();
+  }
+
+  // Normaliza os dados do TMDB para o formato do CineVault
+  function mapTMDBItem(item, defaultType = "filme") {
+    // TMDB usa 'media_type' em endpoints mistos (como o trending). 
+    // Em endpoints específicos (como /discover/tv), forçamos o tipo.
+    const isTV = item.media_type === "tv" || defaultType === "série";
+    
+    const title = item.title || item.name;
+    const date = item.release_date || item.first_air_date;
+    const year = date ? date.split("-")[0] : "N/D";
+    
+    return {
+      id: item.id,
+      title: title,
+      year: year,
+      rating: item.vote_average || 0,
+      type: isTV ? "série" : "filme",
+      poster: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "",
+      backdrop: item.backdrop_path ? `https://image.tmdb.org/t/p/w1280${item.backdrop_path}` : "",
+    };
+  }
+
   async function getHome() {
     if (USE_MOCK) {
       return Promise.resolve(MOCK);
     }
-    // Exemplo de integração futura com TMDB:
-    // const res = await fetch(`${TMDB_BASE}/trending/all/week?api_key=${TMDB_KEY}&language=pt-BR`);
-    // const data = await res.json();
-    // return mapTmdbResponseToHome(data);
-    throw new Error("Integração TMDB ainda não configurada — defina TMDB_KEY e USE_MOCK=false.");
+
+    try {
+      // Promise.all executa as requisições em paralelo, deixando o carregamento muito mais rápido
+      const [trendingRes, topRatedRes, moviesRes, seriesRes] = await Promise.all([
+        fetchTMDB("/trending/all/week"),
+        fetchTMDB("/movie/top_rated"),
+        fetchTMDB("/discover/movie", { sort_by: "popularity.desc" }),
+        fetchTMDB("/discover/tv", { sort_by: "popularity.desc" })
+      ]);
+
+      // Pegamos os 10 primeiros resultados de cada categoria
+      const trending = trendingRes.results.map(i => mapTMDBItem(i)).slice(0, 10);
+      const topRated = topRatedRes.results.map(i => mapTMDBItem(i, "filme")).slice(0, 10);
+      const movies = moviesRes.results.map(i => mapTMDBItem(i, "filme")).slice(0, 10);
+      const series = seriesRes.results.map(i => mapTMDBItem(i, "série")).slice(0, 10);
+
+      // O Hero (destaque principal) será o 1º item da lista de Em Alta
+      const heroItem = trendingRes.results[0];
+      const hero = {
+        title: heroItem.title || heroItem.name,
+        year: (heroItem.release_date || heroItem.first_air_date || "").split("-")[0],
+        rating: heroItem.vote_average || 0,
+        description: heroItem.overview || "Sinopse indisponível.",
+        backdrop: heroItem.backdrop_path ? `https://image.tmdb.org/t/p/w1280${heroItem.backdrop_path}` : ""
+      };
+
+      return { hero, trending, topRated, movies, series };
+    } catch (error) {
+      console.error("Falha ao montar a Home via TMDB:", error);
+      throw error;
+    }
   }
 
   async function getProfile() {
